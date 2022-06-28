@@ -1,15 +1,19 @@
-from node import Node
+from trie.node import Node
 
 class Trie:
     def __init__(self):
-        self.root = Node('_root_', 0)  
+        self.root = Node('_root_', 0, 0)  
         self.tree = {0 : [self.root]}
+        self.nodes = {0 : self.root}
+        self.current_id = 0
 
     def add_node(self, parent_node, child_node):
         assert child_node.parent == None, "The child node already has a parent.";
         assert child_node != self.root, "Root node cannot be chosen as a child node.";
         child_depth = parent_node.depth + 1
+        self.current_id += 1
         child_node.depth = child_depth
+        child_node.identifier = self.current_id
 
         child_node.parent = parent_node
         parent_node.children.append(child_node)
@@ -18,6 +22,7 @@ class Trie:
             self.tree[child_depth] = []
 
         self.tree[child_depth].append(child_node)
+        self.nodes[self.current_id] = child_node
 
     def add_nodes(self, parent_node, child_nodes: list):
         for child_node in child_nodes:
@@ -48,16 +53,25 @@ class Trie:
                     i+=1
             if found == 0:
                 to_search = False
+        for child in current_node.children:
+            if child.is_terminal:
+                current_node = child
+                i+=1
+                break
         return i, current_node
-    def insert_node(self, key):
+
+    def insert_string(self, key):
         starting_i, starting_node = self.search(key)
+        value_terminal = key
         key=key[starting_i:]
         for character in key:
-            new_node = Node(character, starting_i+1)
+            new_node = Node(character)
             self.add_node(starting_node, new_node)
             starting_node = new_node
+        terminal_node = Node(value=value_terminal, is_terminal=True)
+        self.add_node(starting_node, terminal_node) 
 
-    def delete_node(self, key):
+    def delete_string(self, key):
         starting_i, starting_node = self.search(key)
         if starting_i == len(key):
             self.remove_node(starting_node)

@@ -1,5 +1,6 @@
-from node import Node
-from trie import Trie
+from trie.node import Node
+from trie.trie import Trie
+
 
 t = Node('t')
 a = Node('a')
@@ -9,12 +10,14 @@ t2 = Node('t')
 
 
 T = Trie()
-T.insert_node('test')
-T.insert_node('tamarindo')
-T.insert_node('tamarro')
+T.insert_string('test')
+T.insert_string('tamarindo')
+T.insert_string('tamarro')
 
 tree = T.tree
 #for depth in tree:
 #    print(depth, [x.value for x in tree[depth]])
 
-T.predict('ta')
+
+x = T.search('tam')
+print(x)
