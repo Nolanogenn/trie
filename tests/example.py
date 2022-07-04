@@ -1,14 +1,6 @@
 from trie.node import Node
 from trie.trie import Trie
 
-
-t = Node('t')
-a = Node('a')
-e = Node('e')
-s = Node('s')
-t2 = Node('t')
-
-
 T = Trie()
 T.insert_string('test')
 T.insert_string('tamarindo')
@@ -19,5 +11,5 @@ tree = T.tree
 #    print(depth, [x.value for x in tree[depth]])
 
 
-x = T.search('tam')
+x = T.search('tamarindo')
 print(x)
